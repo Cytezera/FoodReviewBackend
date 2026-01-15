@@ -13,28 +13,112 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
-  points Int  @default(0) 
-  nationality String? 
-  password String 
-  dob DateTime?
-  profilePicUrl String? 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt 
+  id                    Int                    @id @default(autoincrement())
+  email                 String                 @unique
+  name                  String?
+  points                Int                    @default(0)
+  title                 String?
+  nationality           String?
+  password              String
+  dob                   DateTime?
+  profilePicUrl         String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  userPreferences       UserPreference[]
+  userPlaceInteractions UserPlaceInteraction[]
 }
 
-model Place{
-  id Int @id @default(autoincrement())
-  name String 
-  description String?
-  address String 
-  latitude Float
-  longitude Float 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model UserPreference {
+  id     Int  @id @default(autoincrement())
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
 
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+  weight     Int      @default(1)
+
+  @@unique([userId, categoryId])
+}
+
+model UserPlaceInteraction {
+  id Int @id @default(autoincrement())
+
+  user   User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+
+  place     Place           @relation(fields: [placeId], references: [id])
+  placeId   Int
+  type      InteractionType
+  createdAt DateTime        @default(now())
+
+  @@index([userId])
+  @@index([placeId])
+}
+
+enum InteractionType {
+  VIEW
+  LIKE
+  SAVE
+  VISIT
+}
+
+model Place {
+  id          Int             @id @default(autoincrement())
+  name        String
+  description String?
+  address     String
+  latitude    Float
+  longitude   Float
+  priceRange  String?
+  status      String?
+  rating      Int?
+  images      PlaceImage[]
+  offers      Offer[]
+  categories  PlaceCategory[]
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+
+  userPlaceInteractions UserPlaceInteraction[]
+}
+
+model Category {
+  id              Int              @id @default(autoincrement())
+  name            String           @unique
+  places          PlaceCategory[]
+  userPreferences UserPreference[]
+}
+
+model PlaceCategory {
+  place      Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId    Int
+  category   Category @relation(fields: [categoryId], references: [id])
+  categoryId Int
+
+  @@id([placeId, categoryId])
+}
+
+model PlaceImage {
+  id        Int      @id @default(autoincrement())
+  place     Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId   Int
+  url       String
+  isPrimary Boolean  @default(false)
+  order     Int?
+  createdAt DateTime @default(now())
+
+  @@index([placeId])
+}
+
+model Offer {
+  id            Int      @id @default(autoincrement())
+  place         Place    @relation(fields: [placeId], references: [id], onDelete: Cascade)
+  placeId       Int
+  title         String
+  description   String?
+  discountValue Float?
+  startsAt      DateTime
+  endsAt        DateTime
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
 }

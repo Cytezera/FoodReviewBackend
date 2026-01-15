@@ -48,7 +48,8 @@ export const loginUser = async (name, email, password) => {
             email: user.email,
             dob: user.dob,
             points: user.points,
-            nationality: user.nationality
+            nationality: user.nationality,
+            title: user.title
 
      }} 
 }
@@ -68,8 +69,8 @@ export const fetchUser = async(id) => {
             email: user.email,
             dob: user.dob,
             points: user.points,
-            nationality: user.nationality
-
+            nationality: user.nationality,
+            title: user.title
         }
     })
 }
