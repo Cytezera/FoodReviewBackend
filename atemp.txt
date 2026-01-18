@@ -1,0 +1,50 @@
+INSERT INTO "Place"
+(name, description, address, latitude, longitude, "priceRange", status, rating)
+VALUES
+  (
+    'Kopi Ping',
+    'Cozy cafe with brunch and specialty coffee',
+    'Phase 4 Jalan Damai',
+    5.962647893195454,
+    116.09040139761647,
+    '20-50',
+    'OPEN',
+    4
+  ),
+  (
+    'Union Cafe',
+    'Tawau Style egg tarts',
+    'Phase 4 Jalan Damai',
+    5.962045238162521, 116.09121475311991,
+    '10-30',
+    'OPEN',
+    5
+  ),
+  (
+    'The Bean',
+    'Cafe with coffee and Tea',
+    'Damai Point',
+    5.961744382582331, 
+    116.09099816102248,
+    '12-80',
+    'OPEN',
+    3
+  ),
+  (
+    'Fook Yuen',
+    'Coffee',
+    'Luyang Commercial Center ',
+    5.962773113100384, 116.09007694590406,
+    '4-30',
+    'OPEN',
+    3
+  ),
+  (
+    'KK Fried Kuey Tiao',
+    'Char Kuey Tiao',
+    'Luyang Commercial Center ',
+    5.962773937197348, 116.09029230238102,
+    '9-12',
+    'OPEN',
+    4
+  );
